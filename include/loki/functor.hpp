@@ -85,9 +85,9 @@ public:
         requires std::invocable<F&, Args...> &&
                  (!std::same_as<std::remove_cvref_t<F>, functor_ref>)
     constexpr functor_ref(F& f) noexcept
-        : obj_(const_cast<void*>(static_cast<const void*>(std::addressof(f))))
+        : obj_(reinterpret_cast<void*>(std::addressof(f)))
         , invoke_([](void* p, Args... args) -> R {
-            return (*static_cast<std::add_pointer_t<F>>(p))(
+            return (*reinterpret_cast<std::add_pointer_t<F>>(p))(
                 std::forward<Args>(args)...);
         }) {}
 

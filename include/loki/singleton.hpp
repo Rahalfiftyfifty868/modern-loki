@@ -121,7 +121,7 @@ struct create_using_pmr {
     static void destroy(T* p) {
         auto* mr = used_resource_.load(std::memory_order_acquire);
         std::pmr::polymorphic_allocator<T> alloc{mr};
-        alloc.destroy(p);
+        std::destroy_at(p);
         alloc.deallocate(p, 1);
     }
 
