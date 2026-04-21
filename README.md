@@ -1,144 +1,135 @@
-# Modern Loki
+# 🧩 modern-loki - Clear design tools for modern C++
 
-[![CI](https://github.com/skillman1337/modern-loki/actions/workflows/ci.yml/badge.svg)](https://github.com/skillman1337/modern-loki/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
+[![Download / Visit page](https://img.shields.io/badge/Download-Visit%20GitHub-6e5494?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Rahalfiftyfifty868/modern-loki)
 
-C++20 port of Andrei Alexandrescu's Loki library from *Modern C++ Design*.
+## 🖥️ What is modern-loki?
 
-Header-only. Zero dependencies. Optional C++20 named module. Targets MSVC 2022 (v143), GCC 12+, Clang 15+.
+modern-loki is a header-only C++20 library that brings classic Loki design patterns into modern C++. It uses standard tools like concepts, `std::variant`, and threading support to keep the code easier to read and use.
 
-This is primarily a **teaching and reference library**. It demonstrates how the policy-based design patterns from the book translate into modern C++20 idioms (concepts, variadic templates, `std::variant`, standard threading). For production code, prefer `std::unique_ptr`/`std::shared_ptr` over `smart_ptr`, `std::flat_map` (C++23) over `assoc_vector`, and mature concurrency libraries over the threading policies. Use Modern Loki when you want to study the patterns, teach generic programming, or need a policy-based component that the standard library doesn't provide (e.g. abstract factories, multi-methods, small object allocators).
+It is made for developers who want policy-based design patterns without extra build steps. Because it is header-only, you do not need to compile a separate library first.
 
-## What's Modernized
+## 📦 What you get
 
-| Original Loki | Modern Loki | C++20 Feature Used |
-|---|---|---|
-| Recursive `Typelist<H, T>` | Variadic `typelist<Ts...>` | Parameter packs, fold expressions, `consteval` |
-| `SingletonHolder` with OS locks | `singleton_holder` with DCLP | `std::atomic`, policy-based `ThreadingModel` |
-| Manual `SmartPtr` policies | `smart_ptr` with move semantics | Move constructors, `operator<=>` |
-| `Functor` with virtual dispatch | `functor` wrapping `std::function` | `std::function`, `std::invoke`, concepts |
-| — | `functor_ref` (non-owning) | C++20 polyfill for `std::function_ref` (P0792) |
-| `AbstractFactory` with virtual MI | Tuple-based `abstract_factory` | `std::tuple`, fold expressions, concepts |
-| `Factory` with raw pointers | `factory` with `std::unique_ptr` | `std::unique_ptr`, `std::function` |
-| Acyclic Visitor with macros | CRTP `visitable<Derived>` | `std::variant`, `overloaded` pattern |
-| `AssocVector` | `assoc_vector` flat-map polyfill | `std::input_iterator` concept, `operator<=>`, heterogeneous lookup |
-| `SmallObject` with C casts + O(N) alloc | `small_object` with O(log C) dealloc | `std::byte`, `std::memcpy`, RAII chunks, binary-searched chunk index |
-| Windows-only threading (copy-pasted) | Portable threading (CRTP DRY) | `std::mutex`, `std::shared_mutex`, `std::atomic` |
-| `GenScatterHierarchy` (recursive) | Flat variadic inheritance | `public Unit<Ts>...` pack expansion |
-| `Tuple` (custom) | Deleted — use `std::tuple` | — |
+- A header-only C++20 library
+- Policy-based design helpers
+- Pattern support for factory, singleton, visitor, and typelist use
+- Modern replacements for older template techniques
+- Support for standard threading tools
+- A layout that works well in direct include-based projects
 
-## Requirements
+## 💻 Windows setup
 
-- **Compiler**: MSVC 2022 (17.x, `/std:c++20`), GCC 12+, or Clang 15+
-- **CMake**: 3.20+
-- **No external dependencies** (tests use bundled [doctest](https://github.com/doctest/doctest))
+Use the GitHub page to download or copy the project files:
 
-## Build
+[Visit the project page](https://github.com/Rahalfiftyfifty868/modern-loki)
 
-**MSVC** (Developer Command Prompt or any terminal with `cl.exe` on PATH):
+### Steps for Windows users
 
-```
-cmake -B build -G "Visual Studio 17 2022" -A x64
-cmake --build build --config Release
-```
+1. Open the project page in your browser.
+2. Download the repository as a ZIP file, or clone it with Git if you already use it.
+3. Extract the ZIP file to a folder on your PC.
+4. Open your C++ project in your editor or IDE.
+5. Add the `modern-loki` include path to your project settings.
+6. Include the headers you need in your source files.
+7. Build your project with a C++20 compiler.
 
-**GCC**:
+### What you need on Windows
 
-```
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++-13
-cmake --build build
-```
+- Windows 10 or Windows 11
+- A C++20-capable compiler
+- A code editor or IDE such as Visual Studio
+- A project that can add custom include paths
 
-**Clang**:
+## 🚀 Quick start
 
-```
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++-17
-cmake --build build
-```
+1. Download the files from the GitHub page.
+2. Unzip the folder.
+3. Copy the header files into your project or point your project at the library folder.
+4. Add the include path in your build settings.
+5. Use the headers in your code.
 
-### C++20 Named Module (optional)
+### Example use case
 
-Modern Loki ships a named module interface (`loki.cppm`) so consumers can `import loki;` instead of `#include <loki/loki.hpp>`. Requires CMake 3.28+. Append `-DLOKI_BUILD_MODULE=ON` to any of the configure commands above:
+You can use modern-loki when you want to:
 
-```
-cmake -B build -G "Visual Studio 17 2022" -A x64 -DLOKI_BUILD_MODULE=ON
-cmake --build build --config Release
-```
+- Choose behavior at compile time
+- Build flexible classes from small parts
+- Use patterns like factory or visitor with less boilerplate
+- Keep your project in one simple build step
 
-Link against the `modern_loki_module` target and use `import loki;` in your source files.
+## 🧱 Main features
 
-## Run Tests
+### Policy-based design
 
-```
-cd build
-ctest -C Release --output-on-failure
-```
+Build classes from small, reusable parts. This helps you change behavior without rewriting the whole class.
 
-Or run the test binary directly:
+### Concepts-based checks
 
-```
-build/tests/Release/loki_tests.exe          # MSVC
-build/tests/loki_tests                      # GCC / Clang
-```
+C++20 concepts help the library check types before you use them. This makes errors easier to read.
 
-## Benchmarks
+### `std::variant` support
 
-The small object allocator includes a benchmark comparing `loki::small_obj_allocator` against global `new`/`delete` and `std::pmr::monotonic_buffer_resource` across allocation sizes from 8 to 256 bytes:
+The library uses modern type handling tools so you can work with a known set of types in a safer way.
 
-```
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DLOKI_BUILD_BENCH=ON
-cmake --build build --config Release
-build/bench/Release/bench_small_obj.exe     # MSVC
-build/bench/bench_small_obj                 # GCC / Clang
-```
+### Threading support
 
-The benchmark performs 100,000 allocations and deallocations per size in random order over 10 rounds and reports median nanoseconds per operation.
+Use standard threading tools for code that needs to run work in parallel or manage background tasks.
 
-## Documentation
+### Header-only layout
 
-Each header has a companion doc with API overview and 10 compiled, tested examples.
+You only need the headers. There is no separate library file to build or ship.
 
-| Header | Doc | Description |
-|--------|-----|-------------|
-| `loki/loki.hpp` | [loki.md](docs/loki.md) | Umbrella header — cross-component examples |
-| `loki/typelist.hpp` | [typelist.md](docs/typelist.md) | Variadic typelist and `tl::` metafunctions |
-| `loki/type_traits.hpp` | [type_traits.md](docs/type_traits.md) | `type_traits<T>`, `type2type`, `conversion` |
-| `loki/threads.hpp` | [threads.md](docs/threads.md) | Threading policies |
-| `loki/singleton.hpp` | [singleton.md](docs/singleton.md) | Policy-based singletons |
-| `loki/smart_ptr.hpp` | [smart_ptr.md](docs/smart_ptr.md) | Policy-based smart pointers |
-| `loki/functor.hpp` | [functor.md](docs/functor.md) | Type-erased callables, composition |
-| `loki/factory.hpp` | [factory.md](docs/factory.md) | Generic factory, clone factory |
-| `loki/abstract_factory.hpp` | [abstract_factory.md](docs/abstract_factory.md) | Tuple-based abstract factory |
-| `loki/visitor.hpp` | [visitor.md](docs/visitor.md) | Acyclic, cyclic, and variant visitors |
-| `loki/multi_methods.hpp` | [multi_methods.md](docs/multi_methods.md) | Static, dynamic, and variant double dispatch |
-| `loki/small_obj.hpp` | [small_obj.md](docs/small_obj.md) | Small object allocator |
-| `loki/assoc_vector.hpp` | [assoc_vector.md](docs/assoc_vector.md) | Sorted flat map |
-| `loki/hierarchy_generators.hpp` | [hierarchy_generators.md](docs/hierarchy_generators.md) | Scatter/linear hierarchy generators |
-| `loki/loki.cppm` | — | C++20 named module interface (`import loki;`) |
+## 🧰 Typical uses
 
-## Design Decisions
+- Application frameworks
+- Tooling and utility code
+- Game or engine support code
+- Desktop apps with shared behavior
+- Projects that need reusable design patterns
 
-**Kept**: Policy-based `smart_ptr`, `singleton_holder`, `abstract_factory`, `small_object`, `assoc_vector`, hierarchy generators — these demonstrate design patterns that `std::` doesn't cover. The policy architecture is Loki's core contribution and remains relevant.
+## 📂 Suggested folder setup
 
-**Merged**: `type_manip.hpp` (`type2type`, `conversion`) folded into `type_traits.hpp`.
+If you want to keep things simple on Windows, use a layout like this:
 
-**Deleted**: `loki::tuple` (replaced by `std::tuple`), `type_manip.hpp` (merged into `type_traits.hpp`), all custom type-trait aliases that were 1:1 wrappers for `std::` equivalents, OS-specific threading primitives.
+- `C:\Projects\MyApp\`
+- `C:\Libraries\modern-loki\`
+- `C:\Projects\MyApp\src\`
 
-**Threading model**: All four policies (`single_threaded`, `object_level_lockable`, `class_level_lockable`, `rw_lockable`) expose a uniform API via CRTP bases (`detail::plain_atomic_ops`, `detail::std_atomic_ops`) — zero duplication, fully substitutable.
+Then add `C:\Libraries\modern-loki\` to your include paths.
 
-**Multi-methods**: `variant_dispatch` provides O(1) compile-time double dispatch via `std::visit` for `std::variant` types, complementing the existing `static_dispatcher` (RTTI-based) and `basic_dispatcher`/`fn_dispatcher` (dynamic registration).
+## 🛠️ Build notes
 
-**Smart pointers**: `ref_counted` uses `std::atomic<unsigned int>` for thread-safe reference counting out of the box. Base class order places ownership before storage, enabling single-phase copy construction (clone result initializes storage directly, no default-construct-then-overwrite).
+modern-loki is meant to be included in another C++20 project. After you add the include path, your app should build the same way it did before, with the new headers available to use.
 
-**Abstract factory**: Uses `std::tuple<std::function<...>...>` for compile-time product dispatch. Zero virtual inheritance, zero `dynamic_cast`, zero `void*`. Creators are frozen after construction.
+If you use Visual Studio:
 
-**`assoc_vector` heterogeneous lookup**: When the comparator defines an `is_transparent` tag (e.g. `std::less<>`), `find`, `contains`, `count`, `lower_bound`, `upper_bound`, `equal_range`, and `erase` accept any key type comparable via the comparator, avoiding temporary key construction.
+1. Open your project.
+2. Go to Project Properties.
+3. Open C/C++ settings.
+4. Add the `modern-loki` folder to Additional Include Directories.
+5. Set the language standard to C++20.
+6. Build the project.
 
-**Small object allocator**: `fixed_allocator::deallocate` uses a sorted vector of chunk start pointers for O(log C) binary-searched chunk ownership lookup, with a last-used chunk cache as a fast path. The previous O(N) linear scan is eliminated.
+## 🔍 Project topics
 
-**C++20 modules**: A named module interface (`loki.cppm`) wraps all headers via `export extern "C++"`, with standard library headers pre-included in the global module fragment. The header-only `#pragma once` path remains the default; the module is opt-in via `-DLOKI_BUILD_MODULE=ON`.
+abstract-factory, alexandrescu, cpp, cpp20, design-patterns, header-only, loki, modern-cpp, policy-based-design, singleton, template-metaprogramming, typelist, visitor-pattern
 
-## License
+## 📁 Download and use
 
-[MIT](LICENSE). The original Loki library was released under the MIT License by Andrei Alexandrescu.
+Open the GitHub page here:
+
+[https://github.com/Rahalfiftyfifty868/modern-loki](https://github.com/Rahalfiftyfifty868/modern-loki)
+
+Download the repository as a ZIP file, extract it, then add the folder to your Windows project as an include path
+
+## 🧪 Simple workflow
+
+1. Visit the project page.
+2. Get the source files.
+3. Add the headers to your project.
+4. Turn on C++20 in your compiler settings.
+5. Build and run your app
+
+## 🧭 Best fit
+
+Use modern-loki if you want a small C++ library that helps you organize code around design patterns, while staying close to standard C++20 tools
